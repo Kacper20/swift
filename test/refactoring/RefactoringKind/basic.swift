@@ -224,6 +224,15 @@ func testSwitchExpand() {
   let account: AccountType = .savings
   switch account { }
 }
+
+func testIfStmtToGuard() {
+  let optionalInt: Int? = 4
+  if let value = optionalInt {
+    print("Value available: \(value)")
+  } else {
+    print("Value absent")
+  }
+}
 // RUN: %refactor -source-filename %s -pos=2:1 -end-pos=5:13 | %FileCheck %s -check-prefix=CHECK1
 // RUN: %refactor -source-filename %s -pos=3:1 -end-pos=5:13 | %FileCheck %s -check-prefix=CHECK1
 // RUN: %refactor -source-filename %s -pos=4:1 -end-pos=5:13 | %FileCheck %s -check-prefix=CHECK1
@@ -311,6 +320,12 @@ func testSwitchExpand() {
 
 // RUN: %refactor -source-filename %s -pos=225:3 | %FileCheck %s -check-prefix=CHECK-EXPAND-SWITCH
 
+// RUN: %refactor -source-filename %s -pos=230:3 | %FileCheck %s -check-prefix=CHECK-CONVERT-TO-GUARD-LET
+// RUN: %refactor -source-filename %s -pos=230:4 | %FileCheck %s -check-prefix=CHECK-CONVERT-TO-GUARD-LET
+// RUN: %refactor -source-filename %s -pos=232:5 | %FileCheck %s -check-prefix=CHECK-CONVERT-TO-GUARD-LET
+// RUN: %refactor -source-filename %s -pos=232:6 | %FileCheck %s -check-prefix=CHECK-CONVERT-TO-GUARD-LET
+// RUN: %refactor -source-filename %s -pos=232:7 | %FileCheck %s -check-prefix=CHECK-CONVERT-TO-GUARD-LET
+// RUN: %refactor -source-filename %s -pos=232:8 | %FileCheck %s -check-prefix=CHECK-CONVERT-TO-GUARD-LET
 
 // CHECK1: Action begins
 // CHECK1-NEXT: Extract Method
@@ -354,3 +369,5 @@ func testSwitchExpand() {
 // CHECK-TRY-CATCH: Convert To Do/Catch
 
 // CHECK-EXPAND-SWITCH: Expand Switch Cases
+
+// CHECK-CONVERT-TO-GUARD-LET: Convert To Guard Let Statement 

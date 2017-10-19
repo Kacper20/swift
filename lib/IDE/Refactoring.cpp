@@ -2035,6 +2035,17 @@ bool RefactoringActionConvertToDoCatch::performChange() {
   return false;
 }
 
+bool RefactoringActionConvertToGuardLet::
+isApplicable(ResolvedCursorInfo Tok, DiagnosticEngine &Diag) {
+  if (!Tok.TrailingStmt)
+    return false;
+  return isa<IfStmt>(Tok.TrailingStmt);
+}
+
+bool RefactoringActionConvertToGuardLet::performChange() {
+  return true;
+}
+
 /// Given a cursor position, this function tries to collect a number literal
 /// expression immediately following the cursor.
 static NumberLiteralExpr *getTrailingNumberLiteral(ResolvedCursorInfo Tok) {
